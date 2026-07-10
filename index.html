@@ -105,38 +105,46 @@
     <!-- HERO                                                         -->
     <!-- =========================================================== -->
     <section class="hero" id="hero">
-      <div class="hero__glow" aria-hidden="true"></div>
-
-      <div class="hero__stage">
-        <p class="hero__eyebrow">Hey <span class="hero__wave" aria-hidden="true">👋</span>, I'm a Full&nbsp;Stack Developer</p>
-        <h1 class="hero__title hero__name">
-          <span class="line"><span class="word" data-split>Henil</span> <span class="word" data-split>Parekh</span></span>
-        </h1>
-        <figure class="hero__portrait" data-parallax-wrap>
-          <img data-tilt src="https://images.unsplash.com/photo-1531891437562-4301cf35b7e4?auto=format&fit=crop&w=800&q=80" alt="Henil Parekh — freelance web developer &amp; designer in Ahmedabad" />
-        </figure>
+      <div class="hero__aurora" aria-hidden="true">
+        <span class="blob blob--1"></span>
+        <span class="blob blob--2"></span>
+        <span class="blob blob--3"></span>
       </div>
 
-      <span class="hero__year mono">©2026</span>
+      <div class="hero__inner">
+        <p class="hero__eyebrow"><span class="dot"></span> Freelance Web Developer &amp; Designer</p>
+        <h1 class="hero__title">
+          <span class="line"><span class="word" data-split>Designed</span></span>
+          <span class="line"><span class="word" data-split>to</span> <span class="word word--accent" data-split>convert.</span></span>
+        </h1>
+        <p class="hero__sub">Websites &amp; landing pages for cafes, gyms, clinics &amp; startups — built with AI speed, finished with human obsession.</p>
+        <div class="hero__cta">
+          <a href="https://wa.me/919999999999" class="btn btn--primary" target="_blank" rel="noopener">Start a project <span class="btn__arrow">→</span></a>
+          <a href="#work" class="btn btn--secondary">See work <span class="btn__arrow">→</span></a>
+        </div>
+      </div>
 
-      <a href="#about" class="hero__scroll" aria-label="Scroll down">
-        <span class="hero__scroll-line" aria-hidden="true"></span>
-        <span class="mono">Scroll</span>
+      <a href="https://wa.me/919999999999" class="hero__badge" target="_blank" rel="noopener" aria-label="Open for projects — start on WhatsApp" data-badge>
+        <svg class="hero__badge-ring" viewBox="0 0 200 200" aria-hidden="true">
+          <defs>
+            <path id="badgeCircle" d="M100,100 m-72,0 a72,72 0 1,1 144,0 a72,72 0 1,1 -144,0" />
+          </defs>
+          <text><textPath href="#badgeCircle" startOffset="0">Open for projects • Ahmedabad, IN • 2026 • </textPath></text>
+        </svg>
+        <span class="hero__badge-core" aria-hidden="true">
+          <span class="hero__badge-arrow">↗</span>
+        </span>
       </a>
 
-      <div class="hero__contact">
-        <a href="mailto:hello@henilparekh.dev" class="mono">E&nbsp;&nbsp;hello@henilparekh.dev</a>
-        <a href="https://wa.me/919999999999" class="mono" target="_blank" rel="noopener">T&nbsp;&nbsp;+91 99999 99999</a>
-      </div>
-
-      <div class="hero__aside">
-        <p class="hero__desc">I build fast, scalable and user-friendly websites &amp; landing pages for cafes, gyms, clinics &amp; startups — built with AI speed on the frontend and reliable, clean code on the backend.</p>
-        <nav class="hero__socials" aria-label="Social links">
-          <a href="https://wa.me/919999999999" target="_blank" rel="noopener">/ WhatsApp</a>
-          <a href="https://instagram.com" target="_blank" rel="noopener">/ Instagram</a>
-          <a href="https://linkedin.com" target="_blank" rel="noopener">/ LinkedIn</a>
-          <a href="https://github.com" target="_blank" rel="noopener">/ GitHub</a>
-        </nav>
+      <div class="hero__foot">
+        <div class="hero__loc">
+          <span class="mono">AHMEDABAD, IN</span>
+          <span class="mono mono--dim" id="heroClock">— 00:00 AM</span>
+        </div>
+        <a href="#about" class="hero__scroll" aria-label="Scroll down">
+          <span class="mono">Scroll</span>
+          <span class="hero__scroll-line" aria-hidden="true"></span>
+        </a>
       </div>
     </section>
 

@@ -329,66 +329,89 @@
      ----------------------------------------------------------- */
   function heroIntro() {
     if (REDUCED || !hasGSAP) return;
-    const words = document.querySelectorAll(".hero__name .word");
+    const words = document.querySelectorAll(".hero__title .word");
     const eyebrow = document.querySelector(".hero__eyebrow");
-    const portrait = document.querySelector(".hero__portrait");
-    const glow = document.querySelector(".hero__glow");
-    const meta = [
-      document.querySelector(".hero__year"),
-      document.querySelector(".hero__scroll"),
-      document.querySelector(".hero__contact"),
-      document.querySelector(".hero__aside"),
-    ].filter(Boolean);
+    const sub = document.querySelector(".hero__sub");
+    const cta = document.querySelector(".hero__cta");
+    const foot = document.querySelector(".hero__foot");
 
     gsap.set(words, { yPercent: 110 });
-    gsap.set(eyebrow, { opacity: 0, y: 20 });
-    gsap.set(portrait, { opacity: 0, scale: 0.9, yPercent: 8 });
-    gsap.set(glow, { opacity: 0, xPercent: -50, yPercent: -50 });
-    gsap.set(meta, { opacity: 0, y: 16 });
+    gsap.set([eyebrow, sub, cta, foot], { opacity: 0, y: 24 });
 
     const tl = gsap.timeline({ delay: 0.1 });
-    tl.to(glow, { opacity: 1, duration: 1.3, ease: "power2.out" }, 0);
-    tl.to(eyebrow, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, 0.1);
-    tl.to(words, { yPercent: 0, duration: 1.1, stagger: 0.12, ease: "power4.out" }, 0.2);
-    tl.to(portrait, { opacity: 1, scale: 1, yPercent: 0, duration: 1.1, ease: "power3.out" }, 0.5);
-    tl.to(meta, { opacity: 1, y: 0, duration: 0.7, stagger: 0.08, ease: "power2.out" }, 0.9);
+    tl.to(words, { yPercent: 0, duration: 1.1, stagger: 0.12, ease: "power4.out" });
+    tl.to(eyebrow, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, "-=0.9");
+    tl.to(sub, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, "-=0.6");
+    tl.to(cta, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, "-=0.5");
+    tl.to(foot, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, "-=0.5");
 
     return tl;
   }
 
   /* -----------------------------------------------------------
-     HERO — ambient green glow + pointer depth
-     The glow breathes and follows the cursor while the portrait
-     counter-drifts for parallax. Desktop/non-touch, motion-safe.
+     HERO — kinetic headline word swap
+     Cycles the accent word: convert. -> sell. -> impress. -> grow.
+     The word slides up out (clipped by its .line mask) and the next
+     slides in from below. Starts only after the intro reveal settles.
+     Disabled under reduced motion (headline stays "convert.").
      ----------------------------------------------------------- */
-  function heroAmbient() {
+  function initHeadlineSwap() {
     if (REDUCED || !hasGSAP) return;
-    const glow = document.querySelector(".hero__glow");
-    const portrait = document.querySelector(".hero__portrait");
-    const hero = document.querySelector(".hero");
+    const el = document.querySelector(".hero__title .word--accent");
+    if (!el) return;
 
-    // Keep GSAP owning the centering transform (xPercent/yPercent = -50%),
-    // then breathe the scale on top of it.
-    if (glow) {
-      gsap.set(glow, { xPercent: -50, yPercent: -50 });
-      gsap.to(glow, { scale: 1.08, duration: 6, yoyo: true, repeat: -1, ease: "sine.inOut" });
+    const words = ["convert.", "sell.", "impress.", "grow."];
+    const HOLD = 2.0;   // seconds each word stays
+    let i = 0;
+
+    function swap() {
+      i = (i + 1) % words.length;
+      const tl = gsap.timeline({ onComplete: () => gsap.delayedCall(HOLD, swap) });
+      tl.to(el, { yPercent: -110, opacity: 0, duration: 0.4, ease: "power3.in" });
+      tl.add(() => { el.textContent = words[i]; });
+      tl.fromTo(el,
+        { yPercent: 110, opacity: 0 },
+        { yPercent: 0, opacity: 1, duration: 0.55, ease: "power3.out" }
+      );
     }
-    if (IS_TOUCH || !hero) return;
 
-    const glowX = glow ? gsap.quickTo(glow, "x", { duration: 1, ease: "power3" }) : () => {};
-    const glowY = glow ? gsap.quickTo(glow, "y", { duration: 1, ease: "power3" }) : () => {};
-    const portX = portrait ? gsap.quickTo(portrait, "x", { duration: 1, ease: "power3" }) : () => {};
-    const portY = portrait ? gsap.quickTo(portrait, "y", { duration: 1, ease: "power3" }) : () => {};
+    // Begin after the load reveal has finished playing.
+    gsap.delayedCall(HOLD + 0.4, swap);
+  }
 
-    hero.addEventListener("mousemove", (e) => {
-      const nx = e.clientX / window.innerWidth - 0.5;   // -0.5 … 0.5
-      const ny = e.clientY / window.innerHeight - 0.5;
-      glowX(nx * 80);  glowY(ny * 80);                  // glow leads the cursor
-      portX(nx * -22); portY(ny * -22);                 // portrait counter-drifts
-    });
-    hero.addEventListener("mouseleave", () => {
-      glowX(0); glowY(0); portX(0); portY(0);
-    });
+  function auroraDrift() {
+    if (REDUCED || !hasGSAP) return;
+    gsap.to(".blob--1", { x: "8vw", y: "6vh", duration: 14, yoyo: true, repeat: -1, ease: "sine.inOut" });
+    gsap.to(".blob--2", { x: "-10vw", y: "-5vh", duration: 18, yoyo: true, repeat: -1, ease: "sine.inOut" });
+    gsap.to(".blob--3", { x: "6vw", y: "-8vh", duration: 16, yoyo: true, repeat: -1, ease: "sine.inOut" });
+
+    // Parallax the aurora on scroll (yPercent — separate channel from pointer x/y).
+    if (window.ScrollTrigger) {
+      gsap.to(".hero__aurora", {
+        yPercent: 30, ease: "none",
+        scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
+      });
+    }
+
+    // Pointer-reactive aurora + headline depth (desktop, non-touch only).
+    if (!IS_TOUCH) {
+      const hero = document.querySelector(".hero");
+      if (!hero) return;
+      const auroraX = gsap.quickTo(".hero__aurora", "x", { duration: 0.9, ease: "power3" });
+      const auroraY = gsap.quickTo(".hero__aurora", "y", { duration: 0.9, ease: "power3" });
+      const titleX = gsap.quickTo(".hero__title", "x", { duration: 1.1, ease: "power3" });
+      const titleY = gsap.quickTo(".hero__title", "y", { duration: 1.1, ease: "power3" });
+
+      hero.addEventListener("mousemove", (e) => {
+        const nx = e.clientX / window.innerWidth - 0.5;   // -0.5 … 0.5
+        const ny = e.clientY / window.innerHeight - 0.5;
+        auroraX(nx * 60);  auroraY(ny * 60);              // aurora leads
+        titleX(nx * -18);  titleY(ny * -18);             // headline counter-drifts
+      });
+      hero.addEventListener("mouseleave", () => {
+        auroraX(0); auroraY(0); titleX(0); titleY(0);
+      });
+    }
   }
 
   /* -----------------------------------------------------------
@@ -610,8 +633,9 @@
 
     // Post-preloader: intros + scroll systems.
     const start = () => {
-      heroAmbient();
+      auroraDrift();
       heroIntro();
+      initHeadlineSwap();
       initMarquees();
       initReveals();
       initWorkShowcase();
