@@ -34,7 +34,7 @@
   --text:      #EAEAE4;
   --text-dim:  rgba(234, 234, 228, 0.55);
   --text-faint:rgba(234, 234, 228, 0.15);
-  --accent:    #5FD068;
+  --accent:    #6C63FF;
   --accent-2:  #FFB454;
   --line:      rgba(234, 234, 228, 0.10);
   --line-strong: rgba(234, 234, 228, 0.20);
@@ -319,11 +319,11 @@ body.menu-open .nav__burger i:nth-child(2) { transform: translateY(-3px) rotate(
 /* Primary — indigo fill, lifts and glows on hover */
 .btn--primary {
   background: var(--accent); color: #fff;
-  box-shadow: 0 8px 24px -12px rgba(95, 208, 104, 0.6);
+  box-shadow: 0 8px 24px -12px rgba(108, 99, 255, 0.7);
 }
 .btn--primary:hover {
   background: #7d76ff;
-  box-shadow: 0 14px 36px -12px rgba(95, 208, 104, 0.75);
+  box-shadow: 0 14px 36px -12px rgba(108, 99, 255, 0.85);
 }
 
 /* Secondary — outline that brightens and tints on hover */
@@ -354,7 +354,7 @@ body.menu-open .nav__burger i:nth-child(2) { transform: translateY(-3px) rotate(
   position: absolute; z-index: 0; pointer-events: none;
   left: 50%; top: 55%; transform: translate(-50%, -50%);
   width: min(72vw, 760px); aspect-ratio: 1;
-  background: radial-gradient(circle, rgba(95, 208, 104, 0.45), rgba(95, 208, 104, 0.10) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(108, 99, 255, 0.42), rgba(108, 99, 255, 0.10) 45%, transparent 70%);
   filter: blur(26px);
   will-change: transform;
 }
