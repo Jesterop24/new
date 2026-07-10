@@ -354,11 +354,31 @@
     gsap.to(".blob--2", { x: "-10vw", y: "-5vh", duration: 18, yoyo: true, repeat: -1, ease: "sine.inOut" });
     gsap.to(".blob--3", { x: "6vw", y: "-8vh", duration: 16, yoyo: true, repeat: -1, ease: "sine.inOut" });
 
-    // Parallax the aurora on scroll.
+    // Parallax the aurora on scroll (yPercent — separate channel from pointer x/y).
     if (window.ScrollTrigger) {
       gsap.to(".hero__aurora", {
         yPercent: 30, ease: "none",
         scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
+      });
+    }
+
+    // Pointer-reactive aurora + headline depth (desktop, non-touch only).
+    if (!IS_TOUCH) {
+      const hero = document.querySelector(".hero");
+      if (!hero) return;
+      const auroraX = gsap.quickTo(".hero__aurora", "x", { duration: 0.9, ease: "power3" });
+      const auroraY = gsap.quickTo(".hero__aurora", "y", { duration: 0.9, ease: "power3" });
+      const titleX = gsap.quickTo(".hero__title", "x", { duration: 1.1, ease: "power3" });
+      const titleY = gsap.quickTo(".hero__title", "y", { duration: 1.1, ease: "power3" });
+
+      hero.addEventListener("mousemove", (e) => {
+        const nx = e.clientX / window.innerWidth - 0.5;   // -0.5 … 0.5
+        const ny = e.clientY / window.innerHeight - 0.5;
+        auroraX(nx * 60);  auroraY(ny * 60);              // aurora leads
+        titleX(nx * -18);  titleY(ny * -18);             // headline counter-drifts
+      });
+      hero.addEventListener("mouseleave", () => {
+        auroraX(0); auroraY(0); titleX(0); titleY(0);
       });
     }
   }
