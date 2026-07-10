@@ -348,6 +348,37 @@
     return tl;
   }
 
+  /* -----------------------------------------------------------
+     HERO — kinetic headline word swap
+     Cycles the accent word: convert. -> sell. -> impress. -> grow.
+     The word slides up out (clipped by its .line mask) and the next
+     slides in from below. Starts only after the intro reveal settles.
+     Disabled under reduced motion (headline stays "convert.").
+     ----------------------------------------------------------- */
+  function initHeadlineSwap() {
+    if (REDUCED || !hasGSAP) return;
+    const el = document.querySelector(".hero__title .word--accent");
+    if (!el) return;
+
+    const words = ["convert.", "sell.", "impress.", "grow."];
+    const HOLD = 2.0;   // seconds each word stays
+    let i = 0;
+
+    function swap() {
+      i = (i + 1) % words.length;
+      const tl = gsap.timeline({ onComplete: () => gsap.delayedCall(HOLD, swap) });
+      tl.to(el, { yPercent: -110, opacity: 0, duration: 0.4, ease: "power3.in" });
+      tl.add(() => { el.textContent = words[i]; });
+      tl.fromTo(el,
+        { yPercent: 110, opacity: 0 },
+        { yPercent: 0, opacity: 1, duration: 0.55, ease: "power3.out" }
+      );
+    }
+
+    // Begin after the load reveal has finished playing.
+    gsap.delayedCall(HOLD + 0.4, swap);
+  }
+
   function auroraDrift() {
     if (REDUCED || !hasGSAP) return;
     gsap.to(".blob--1", { x: "8vw", y: "6vh", duration: 14, yoyo: true, repeat: -1, ease: "sine.inOut" });
@@ -604,6 +635,7 @@
     const start = () => {
       auroraDrift();
       heroIntro();
+      initHeadlineSwap();
       initMarquees();
       initReveals();
       initWorkShowcase();
