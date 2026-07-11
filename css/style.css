@@ -371,6 +371,15 @@ body.menu-open .nav__burger i:nth-child(2) { transform: translateY(-3px) rotate(
 }
 .hero__title .line { text-align: center; }
 .hero__title .word--accent { color: var(--accent); }
+/* blinking typewriter caret (added by JS via .is-typing) */
+.hero__title .word--accent.is-typing::after {
+  content: ""; display: inline-block;
+  width: 0.055em; height: 0.72em;
+  margin-left: 0.05em; vertical-align: -0.04em;
+  background: currentColor;
+  animation: caretBlink 1.05s steps(1, end) infinite;
+}
+@keyframes caretBlink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
 .hero__sub {
   max-width: 46ch; margin: 2rem auto 0;
   font-size: clamp(1rem, 1.7vw, 1.3rem); font-weight: 300;

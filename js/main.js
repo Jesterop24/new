@@ -349,34 +349,44 @@
   }
 
   /* -----------------------------------------------------------
-     HERO — kinetic headline word swap
-     Cycles the accent word: convert. -> sell. -> impress. -> grow.
-     The word slides up out (clipped by its .line mask) and the next
-     slides in from below. Starts only after the intro reveal settles.
+     HERO — typewriter headline
+     Types the accent word out, erases it, types the next:
+     convert. -> sell. -> impress. -> grow. (loop), with a blinking
+     caret (CSS). Pure vanilla so it works even if GSAP fails.
      Disabled under reduced motion (headline stays "convert.").
      ----------------------------------------------------------- */
   function initHeadlineSwap() {
-    if (REDUCED || !hasGSAP) return;
+    if (REDUCED) return;
     const el = document.querySelector(".hero__title .word--accent");
     if (!el) return;
 
     const words = ["convert.", "sell.", "impress.", "grow."];
-    const HOLD = 2.0;   // seconds each word stays
-    let i = 0;
+    const TYPE = 85;    // ms per typed character
+    const ERASE = 42;   // ms per erased character
+    const HOLD = 1500;  // ms a full word stays before erasing
+    const START = 1900; // ms before the first cycle (lets the reveal settle)
+    let wi = 0;
 
-    function swap() {
-      i = (i + 1) % words.length;
-      const tl = gsap.timeline({ onComplete: () => gsap.delayedCall(HOLD, swap) });
-      tl.to(el, { yPercent: -110, opacity: 0, duration: 0.4, ease: "power3.in" });
-      tl.add(() => { el.textContent = words[i]; });
-      tl.fromTo(el,
-        { yPercent: 110, opacity: 0 },
-        { yPercent: 0, opacity: 1, duration: 0.55, ease: "power3.out" }
-      );
+    el.classList.add("is-typing");   // enables the blinking caret (CSS)
+    el.textContent = words[0];
+
+    function loop() {
+      const cur = words[wi];
+      let n = cur.length;
+      (function erase() {
+        el.textContent = cur.slice(0, n);
+        if (n-- > 0) { setTimeout(erase, ERASE); return; }
+        wi = (wi + 1) % words.length;
+        const next = words[wi];
+        let m = 0;
+        (function type() {
+          el.textContent = next.slice(0, m);
+          if (m++ < next.length) { setTimeout(type, TYPE); return; }
+          setTimeout(loop, HOLD);
+        })();
+      })();
     }
-
-    // Begin after the load reveal has finished playing.
-    gsap.delayedCall(HOLD + 0.4, swap);
+    setTimeout(loop, START);
   }
 
   function auroraDrift() {
