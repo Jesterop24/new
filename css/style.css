@@ -355,9 +355,12 @@ body.menu-open .nav__burger i:nth-child(2) { transform: translateY(-3px) rotate(
 .blob--2 { width: 38vw; height: 38vw; right: -4vw; top: 22vh; background: radial-gradient(circle, rgba(108,99,255,0.55), transparent 70%); }
 .blob--3 { width: 30vw; height: 30vw; left: 32vw; bottom: -8vh; background: radial-gradient(circle, rgba(255,180,84,0.35), transparent 70%); }
 
-.hero__inner { position: relative; z-index: 2; max-width: var(--maxw); margin-inline: auto; width: 100%; }
+.hero__inner {
+  position: relative; z-index: 2; max-width: var(--maxw); margin-inline: auto; width: 100%;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+}
 .hero__eyebrow {
-  display: flex; align-items: center; gap: 0.6rem;
+  display: flex; align-items: center; justify-content: center; gap: 0.6rem;
   font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase;
   letter-spacing: 0.1em; color: var(--text-dim); margin-bottom: 1.6rem;
 }
@@ -366,13 +369,14 @@ body.menu-open .nav__burger i:nth-child(2) { transform: translateY(-3px) rotate(
   font-size: clamp(3.5rem, 10vw, 11rem);
   line-height: 0.94; letter-spacing: -0.04em; text-transform: uppercase;
 }
+.hero__title .line { text-align: center; }
 .hero__title .word--accent { color: var(--accent); }
 .hero__sub {
-  max-width: 46ch; margin-top: 2rem;
+  max-width: 46ch; margin: 2rem auto 0;
   font-size: clamp(1rem, 1.7vw, 1.3rem); font-weight: 300;
   color: var(--text-dim); line-height: 1.55;
 }
-.hero__cta { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2.75rem; }
+.hero__cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 2.75rem; }
 
 .hero__foot {
   position: relative; z-index: 2;
@@ -389,12 +393,11 @@ body.menu-open .nav__burger i:nth-child(2) { transform: translateY(-3px) rotate(
 }
 @keyframes scrollLine { 0% { transform: translateY(-100%); } 100% { transform: translateY(280%); } }
 
-/* rotating "open for projects" badge */
+/* rotating "open for projects" badge — lower-right, clear of centered headline */
 .hero__badge {
   position: absolute; z-index: 2;
-  top: 50%; right: clamp(2rem, 7vw, 7rem);
-  transform: translateY(-50%);
-  width: clamp(122px, 13vw, 178px); aspect-ratio: 1;
+  bottom: clamp(6rem, 16vh, 9rem); right: clamp(1.5rem, 6vw, 6rem);
+  width: clamp(112px, 12vw, 160px); aspect-ratio: 1;
   display: grid; place-items: center;
   color: var(--text);
   will-change: transform;
@@ -676,8 +679,8 @@ body.menu-open .nav__burger i:nth-child(2) { transform: translateY(-3px) rotate(
   .process__grid { grid-template-columns: repeat(2, 1fr); gap: 2.5rem 1.5rem; }
   .process__line { display: none; }
   .hero__foot { flex-direction: row; }
-  /* badge drops to lower-right, clear of the wrapped headline */
-  .hero__badge { top: auto; bottom: clamp(6rem, 20vh, 11rem); right: clamp(1.25rem, 5vw, 2rem); transform: none; width: clamp(104px, 30vw, 132px); }
+  /* hide the floating badge on mobile — keeps the centered hero clean */
+  .hero__badge { display: none; }
   .footer__grid { grid-template-columns: 1fr; text-align: left; }
   .footer__links { justify-self: start; }
   /* mobile: native horizontal swipe fallback for work */
